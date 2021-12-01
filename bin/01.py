@@ -14,15 +14,10 @@ with open( os.path.join(os.path.dirname(__file__), inputfile) ) as f:
 
 def part1(numbers):
     increased = 0
-    decreased = 0
-    prev = numbers[0]
     for i in range(1, len(numbers)):
-        if numbers[i] > prev:
+        if numbers[i] > numbers[i-1]:
             increased +=1
-        elif numbers[i] < prev:
-            decreased +=1
-        prev = numbers[i]
-    print(increased)
+    return increased
 
 
 def part2(numbers):
@@ -30,8 +25,9 @@ def part2(numbers):
     for i in range(0, len(numbers)-2):
         slider = [numbers[i], numbers[i+1], numbers[i+2]]
         windows.append(sum(slider))
-    part1(windows)
+    return part1(windows)
 
 
-part1(myInput)
-part2(myInput)
+if __name__ == '__main__':
+    print("Part 1:", part1(myInput))
+    print("Part 2:", part2(myInput))
