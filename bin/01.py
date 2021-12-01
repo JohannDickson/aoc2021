@@ -21,10 +21,17 @@ def part1(numbers):
             increased +=1
         elif numbers[i] < prev:
             decreased +=1
-        else:
-            print("huh?")
         prev = numbers[i]
     print(increased)
-    print(decreased)
+
+
+def part2(numbers):
+    windows = []
+    for i in range(0, len(numbers)-2):
+        slider = [numbers[i], numbers[i+1], numbers[i+2]]
+        windows.append(sum(slider))
+    part1(windows)
+
 
 part1(myInput)
+part2(myInput)
