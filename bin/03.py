@@ -19,18 +19,23 @@ def getFreq(chars):
     return max(res, key=res.get), min(res, key=res.get)
 
 
-def part1(numbers):
+def rotate(numbers):
     width = len(numbers[0])
     arnold_sideways = [""]*width
-
     for i in numbers:
         for j in range(0, width):
             arnold_sideways[j] += i[j]
+    return arnold_sideways
+
+
+def part1(numbers):
+    width = len(numbers[0])
+    sideboard = rotate(numbers)
 
     gamma = ""
     epsilon = ""
     for i in range(width):
-        g, e = getFreq(arnold_sideways[i])
+        g, e = getFreq(sideboard[i])
         gamma += g
         epsilon += e
 
