@@ -1,6 +1,7 @@
 #! /usr/bin/env python3
 
 import os
+from collections import Counter
 
 
 testfile = "../test/06_1.txt"
@@ -13,20 +14,21 @@ with open( os.path.join(os.path.dirname(__file__), inputfile) ) as f:
 
 
 def growfish(school):
-    newSchool = school.copy()
-    for i in range(len(newSchool)):
-        newSchool[i] -=1
-        if newSchool[i] < 0:
-            newSchool[i] = 6
-            newSchool.append(8)
-    return newSchool
+    newFish = school[0]
+    for i in range(1,9):
+        school[i-1] = school[i]
+    school[8] = newFish
+    school[6] += newFish
+    return school
 
 
 def part1(lampfish, days):
+    lampfish = Counter(lampfish)
     for i in range(0, days):
         lampfish = growfish(lampfish)
-    return len(lampfish)
+    return sum(lampfish.values())
 
 
 if __name__ == '__main__':
     print("Part 1:", part1(myInput, 80))
+    print("Part 2:", part1(myInput, 256))
