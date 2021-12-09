@@ -31,14 +31,14 @@ def find_low_points(grid):
     for y in range(0, len(grid)):
         for x in range(0, len(grid[y])):
             if grid[y][x] < grid[y-1][x] and grid[y][x] < grid[y+1][x] and grid[y][x] < grid[y][x-1] and grid[y][x] < grid[y][x+1]:
-                lowpoints.append({"y": y, "x": x})
+                lowpoints.append((y,x))
     return lowpoints
 
 
 def part1(tubes):
     tubes = input_to_grid(tubes)
     lp = find_low_points(tubes)
-    lp = [tubes[p['y']][p['x']] for p in lp]
+    lp = [tubes[p[0]][p[1]] for p in lp]
     score = [x+1 for x in lp]
     return sum(score)
 
