@@ -41,5 +41,36 @@ def part1(chunks):
     return score
 
 
+def part2(chunks):
+    points = {
+        ')': 1,
+        ']': 2,
+        '}': 3,
+        '>': 4,
+    }
+    scores = []
+    for l in chunks:
+        expected = []
+        corrupt = False
+        for c in list(l):
+            if c in pairs.keys():
+                expected.append(pairs[c])
+            elif c == expected[-1]:
+                del expected[-1]
+            else:
+                corrupt = True
+                break
+
+        if not corrupt:
+            score = 0
+            for c in expected[::-1]:
+                score *= 5
+                score += points[c]
+            scores.append(score)
+
+    return sorted(scores)[(len(scores)-1)//2]
+
+
 if __name__ == '__main__':
     print("Part 1:", part1(myInput))
+    print("Part 2:", part2(myInput))
