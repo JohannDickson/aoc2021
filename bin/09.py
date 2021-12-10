@@ -13,10 +13,16 @@ with open( os.path.join(os.path.dirname(__file__), inputfile) ) as f:
     myInput = [x.strip() for x in f.readlines()]
 
 
+def pad_grid(grid, filler):
+    new_grid = [[filler]*(len(grid[0])+2)]
+    new_grid += [ [filler]+line+[filler] for line in grid ]
+    new_grid += [[filler]*(len(grid[0])+2)]
+    return new_grid
+
+
 def input_to_grid(lines):
-    grid = [[11]*(len(lines[0])+2)]
-    grid += [ [11]+[int(x) for x in list(y)] + [11] for y in lines]
-    grid += [[11]*(len(lines[0])+2)]
+    grid = [ [int(x) for x in list(y)] for y in lines]
+    grid = pad_grid(grid, 11)
     return grid
 
 
