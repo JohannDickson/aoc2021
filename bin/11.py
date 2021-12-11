@@ -73,6 +73,16 @@ def part1(octopuses, iterations):
     return flashes
 
 
+def part2(octopuses):
+    octopuses = [[int(x) for x in list(y)] for y in octopuses]
+    octocount = len(octopuses)*len(octopuses[0])
+    iteration = 0
+    while sum([y.count(0) for y in octopuses]) != octocount:
+        update_energy(octopuses)
+        iteration += 1
+    return iteration
+
+
 if __name__ == '__main__':
     print("Part 1:", part1(myInput, 100))
-
+    print("Part 2:", part2(myInput))
