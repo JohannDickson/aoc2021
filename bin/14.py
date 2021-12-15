@@ -15,11 +15,15 @@ with open( os.path.join(os.path.dirname(__file__), inputfile) ) as f:
 
 def part1(polymers, iterations):
     [poly, rules] = polymers.strip().split('\n\n')
+    changes = []
+
+    for r in rules.split('\n'):
+        pair, new = r.split(' -> ')
+        changes.append((pair, new))
+
     for _ in range(iterations):
         inserts = {}
-
-        for r in rules.split('\n'):
-            pair, new = r.split(' -> ')
+        for (pair, new) in changes:
             if poly.count(pair):
                 try:
                     index = 0
