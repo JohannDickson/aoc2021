@@ -33,14 +33,9 @@ hexmap = {
 }
 
 
-versionSum = 0
 def readPacket(packet):
-    global versionSum
-
     version = int(packet[:3], 2)
     type_id = int(packet[3:6], 2)
-
-    versionSum+=version
 
     if type_id == 4: # value
         number_chunk = list(packet[6:])
@@ -78,6 +73,7 @@ def readPacket(packet):
                 subs.append(res)
             next_step = nextpacket
 
+        version += sum([p[0] for p in subs])
 
         values = [x[2] for x in subs]
         if type_id == 0: # sum
@@ -105,11 +101,9 @@ def readPacket(packet):
 
 
 def part1(hexinput):
-    global versionSum
-    versionSum = 0
     binstring = ''.join([hexmap[c] for c in hexinput])
-    readPacket(binstring)
-    return versionSum
+    result, _ = readPacket(binstring)
+    return(result[0])
 
 
 def part2(hexinput):
