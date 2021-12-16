@@ -1,6 +1,7 @@
 #! /usr/bin/env python3
 
 import os
+from math import prod
 
 
 testfile = "../test/16_1.txt"
@@ -41,7 +42,7 @@ def readPacket(packet):
 
     versionSum+=version
 
-    if type_id == 4:
+    if type_id == 4: # value
         number_chunk = list(packet[6:])
 
         the_number = ''
@@ -67,7 +68,7 @@ def readPacket(packet):
             while nextpacket != '':
                 (res, nextpacket) = readPacket(nextpacket)
                 subs.append(res)
-            return ((version, type_id, subs), contents[15+total_length_in_bits:])
+            next_step = contents[15+total_length_in_bits:]
 
         elif length_type_id == 1:
             number_of_sub_packets = int(contents[:11], 2)
@@ -75,7 +76,32 @@ def readPacket(packet):
             for i in range(number_of_sub_packets):
                 (res, nextpacket) = readPacket(nextpacket)
                 subs.append(res)
-            return ((version, type_id, subs), nextpacket)
+            next_step = nextpacket
+
+
+        values = [x[2] for x in subs]
+        if type_id == 0: # sum
+            result = sum(values)
+
+        if type_id == 1: # product
+            result = prod(values)
+
+        if type_id == 2: # minimum
+            result = min(values)
+
+        if type_id == 3: # maximum
+            result = max(values)
+
+        if type_id == 5: # >
+            result = 1 if (values[0] > values[1]) else 0
+
+        if type_id == 6: # <
+            result = 1 if (values[0] < values[1]) else 0
+
+        if type_id == 7: # ==
+            result = 1 if (values[0] == values[1]) else 0
+
+        return ((version, type_id, result), next_step)
 
 
 def part1(hexinput):
@@ -86,5 +112,12 @@ def part1(hexinput):
     return versionSum
 
 
+def part2(hexinput):
+    binstring = ''.join([hexmap[c] for c in hexinput])
+    result, _ = readPacket(binstring)
+    return(result[2])
+
+
 if __name__ == '__main__':
     print("Part 1:", part1(myInput))
+    print("Part 2:", part2(myInput))
