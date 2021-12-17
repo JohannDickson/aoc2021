@@ -14,12 +14,10 @@ with open( os.path.join(os.path.dirname(__file__), inputfile) ) as f:
 
 
 def calculatePosition(pos):
-
     pos['x']+=pos['velocity']['x']
     pos['y']+=pos['velocity']['y']
 
     pos['maxy'] = max(pos['y'], pos['maxy'])
-
 
     if pos['velocity']['x'] > 0:
         pos['velocity']['x']-=1
@@ -28,43 +26,39 @@ def calculatePosition(pos):
 
     pos['velocity']['y']-=1
 
-
     return pos
 
 
-def part1(trickshot):
-    print(trickshot)
+def shootHoops(trickshot):
     reg = re.compile(r"target area: x=(\d+)\.\.(\d+), y=(\-\d+)\.\.(\-\d+)")
     [res] = re.findall(reg, trickshot)
     (xmin,xmax,ymin,ymax) = [int(x) for x in res]
 
-    maxIterations = 100000
+    maxIterations = 10
 
     solutions = []
-    for yvel in range(0, 100):
-        for xvel in range(0, 100):
+    for yvel in range(ymin, 100):
+        for xvel in range(0, xmax+1):
             pos = {'x': 0, 'y': 0, 'vector':(xvel, yvel), 'velocity':{'x': xvel, 'y':yvel}, 'maxy':0}
-            for _ in range(maxIterations):
+            while (pos['x'] < xmax and pos['y'] > ymin):
                 pos = calculatePosition(pos)
-
                 if xmin <= pos['x'] <= xmax and ymin <= pos['y'] <= ymax:
-                    # print((xmin,xmax,ymin,ymax), pos)
                     solutions.append(pos)
                     break
 
-                if pos['x'] > xmax:
-                    break
-                if pos['y'] < ymin:
-                    break
+    return max([s['maxy'] for s in solutions]), len(solutions)
 
-    from pprint import pprint
-    pprint(solutions)
 
-    return max([s['maxy'] for s in solutions])
+def part1(trickshot):
+    maxy,_ = shootHoops(trickshot)
+    return maxy
+
+
+def part2(trickshot):
+    _,solutions = shootHoops(trickshot)
+    return solutions
+
 
 if __name__ == '__main__':
-    test1 = part1(testInput)
-    expected1 = 45
-    print('test', expected1, test1)
-    if test1 == expected1:
-        print("Part 1:", part1(myInput))
+    print("Part 1:", part1(myInput))
+    print("Part 2:", part2(myInput))
