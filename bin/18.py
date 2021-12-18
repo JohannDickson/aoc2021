@@ -63,16 +63,16 @@ def explode(numbers, deep, lengths):
 
 def find_10(numbers):
     for i in range(len(numbers)):
-        if numbers[i] >= 10:
+        if type(numbers[i])==int and numbers[i] >= 10:
             return [i]
             for j in range(len(numbers[i])):
-                if numbers[i][j] >= 10:
+                if type(numbers[i][j])==int and numbers[i][j] >= 10:
                     return [i,j]
                     for k in range(len(numbers[i][j])):
-                        if numbers[i][j][k] >= 10:
+                        if type(numbers[i][j][k])==int and numbers[i][j][k] >= 10:
                             return [i,j,k]
                             for l in range(len(numbers[i][j][k])):
-                                if numbers[i][j][k][l] >= 10:
+                                if type(numbers[i][j][k][l])==int and numbers[i][j][k][l] >= 10:
                                     return [i,j,k,l]
     return False
 
