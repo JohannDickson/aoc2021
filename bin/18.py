@@ -2,6 +2,7 @@
 
 import os
 import json
+from math import ceil, floor
 
 
 testfile = "../test/18_1.txt"
@@ -31,6 +32,13 @@ def calculatePosition(pos):
 
 def explode(numbers):
     return None
+
+
+def split(n):
+    a = floor(n/2)
+    b = ceil(n/2)
+    return [a, b]
+
 
 def reduce(numbers):
     # If any pair is nested inside four pairs, the leftmost such pair explodes.
