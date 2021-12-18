@@ -61,6 +61,22 @@ def explode(numbers, deep, lengths):
     return numbers
 
 
+def find_10(numbers):
+    for i in range(len(numbers)):
+        if numbers[i] >= 10:
+            return [i]
+            for j in range(len(numbers[i])):
+                if numbers[i][j] >= 10:
+                    return [i,j]
+                    for k in range(len(numbers[i][j])):
+                        if numbers[i][j][k] >= 10:
+                            return [i,j,k]
+                            for l in range(len(numbers[i][j][k])):
+                                if numbers[i][j][k][l] >= 10:
+                                    return [i,j,k,l]
+    return False
+
+
 def split(n):
     a = floor(n/2)
     b = ceil(n/2)
@@ -85,6 +101,20 @@ def reduce(numbers):
         return numbers
 
     # To split a regular number, replace it with a pair; the left element of the pair should be the regular number divided by two and rounded down, while the right element of the pair should be the regular number divided by two and rounded up. For example, 10 becomes [5,5], 11 becomes [5,6], 12 becomes [6,6], and so on.
+    ten = find_10(numbers)
+    if ten:
+        print('TEN', ten)
+        if len(ten) > 1:
+            if len(ten) > 2:
+                if len(ten) > 3:
+                    numbers[ten[0]][ten[1]][ten[2]][ten[3]] = split(numbers[ten[0]][ten[1]][ten[2]][ten[3]])
+                else:
+                    numbers[ten[0]][ten[1]][ten[2]] = split(numbers[ten[0]][ten[1]][ten[2]])
+            else:
+                numbers[ten[0]][ten[1]] = split(numbers[ten[0]][ten[1]])
+        else:
+            numbers[ten[0]] = split(numbers[ten[0]])
+        # numbers[ten] = split()
 
     return None
 
