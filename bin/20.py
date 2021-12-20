@@ -137,16 +137,13 @@ def part1(pixels, iterations):
     result = 0
     for k in positions.keys():
         result+= sum([int(x) for x in positions[k].values()])
-    print(result, 35)
 
     return result
 
 
 if __name__ == '__main__':
-    expected1 = 35
-    test1 = part1(testInput, 2)
-    print("Test 1:", expected1, expected1==test1, test1)
-    if expected1 == test1:
-        print("Part 1:", part1(myInput, 2))
-        #NOT 5367, too high
-        # 5334 too high
+    # expected1 = 35
+    # test1 = part1(testInput, 2)
+    # print("Test 1:", expected1, expected1==test1, test1)
+    # if expected1 == test1:
+    print("Part 1:", part1(myInput, 2)) # 5268
