@@ -100,7 +100,9 @@ def part1(pixels, iterations):
     positions = defaultdict(dict)
     grid = [list(y.strip()) for y in image.strip().split('\n')]
     fill = '0'
-    grid = pad_grid(pad_grid(grid, fill),fill)
+    # for _ in range(iterations*iterations + iterations):
+    #     grid = pad_grid(grid,fill)
+    grid = pad_grid(grid,fill)
     for y in range(len(grid)):
         for x in range(len(grid[y])):
             if grid[y][x]=='#':
@@ -108,31 +110,8 @@ def part1(pixels, iterations):
             else:
                 positions[y][x] = '0'
 
-    out = ''
-    for y in sorted(positions.keys()):
-        for x in sorted(positions[y].keys()):
-            if positions[y][x] =='1':
-                out+='#'
-            else:
-                out+='.'
-        out+='\n'
-    print(out)
-
-    # return
-
     for i in range(iterations):
-        print(i, i % 2)
-        # positions = deepcopy(updateGrid(deepcopy(positions),algo, str((i) % 2)))
-        positions = deepcopy(updateGrid(deepcopy(positions),algo, '0'))
-        out = ''
-        for y in sorted(positions.keys()):
-            for x in sorted(positions[y].keys()):
-                if positions[y][x] =='1':
-                    out+='#'
-                else:
-                    out+='.'
-            out+='\n'
-        print(out)
+        positions = deepcopy(updateGrid(deepcopy(positions),algo, str((i) % 2), str((i+1) % 2)))
 
     result = 0
     for k in positions.keys():
@@ -147,3 +126,4 @@ if __name__ == '__main__':
     # print("Test 1:", expected1, expected1==test1, test1)
     # if expected1 == test1:
     print("Part 1:", part1(myInput, 2)) # 5268
+    print("Part 1:", part1(myInput, 50)) # 16452
