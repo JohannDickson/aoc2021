@@ -32,7 +32,7 @@ def print_grid(grid):
     print(out)
 
 
-def updateGrid(grid, algo, filler):
+def updateGrid(grid, algo, filler, antifill):
     new_grid = defaultdict(dict, grid)
     oldgrid =deepcopy(grid)
     grid = None
@@ -45,45 +45,45 @@ def updateGrid(grid, algo, filler):
             try:
                 substr+=grid[i-1][j-1]
             except:
-                new_grid[i-1][j-1]=filler
+                new_grid[i-1][j-1]=antifill
                 substr+=filler
             try:
                 substr+=grid[i-1][j]
             except:
-                new_grid[i-1][j]=filler
+                new_grid[i-1][j]=antifill
                 substr+=filler
             try:
                 substr+=grid[i-1][j+1]
             except:
-                new_grid[i-1][j+1]=filler
+                new_grid[i-1][j+1]=antifill
                 substr+=filler
 
             try:
                 substr+=grid[i][j-1]
             except:
-                new_grid[i][j-1]=filler
+                new_grid[i][j-1]=antifill
                 substr+=filler
             substr+=grid[i][j]
             try:
                 substr+=grid[i][j+1]
             except:
-                new_grid[i][j+1]=filler
+                new_grid[i][j+1]=antifill
                 substr+=filler
 
             try:
                 substr+=grid[i+1][j-1]
             except:
-                new_grid[i+1][j-1]=filler
+                new_grid[i+1][j-1]=antifill
                 substr+=filler
             try:
                 substr+=grid[i+1][j]
             except:
-                new_grid[i+1][j]=filler
+                new_grid[i+1][j]=antifill
                 substr+=filler
             try:
                 substr+=grid[i+1][j+1]
             except:
-                new_grid[i+1][j+1]=filler
+                new_grid[i+1][j+1]=antifill
                 substr+=filler
 
             bin_number = int(substr, 2)
