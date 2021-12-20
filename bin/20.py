@@ -2,6 +2,7 @@
 
 import os
 import json
+from copy import deepcopy
 from collections import defaultdict
 
 testfile = "../test/20_1.txt"
@@ -23,62 +24,67 @@ def pad_grid(grid, filler):
 def print_grid(grid):
     out = ''
     for y in grid:
-        out += ''.join([str(x) for x in y])+'\n'
+        for x in y:
+            if x =='1':
+                out+='#'
+            else:
+                out+='.'
     print(out)
 
 
-def updateGrid(grid, algo):
-    new_grid = grid
+def updateGrid(grid, algo, filler):
+    new_grid = defaultdict(dict, grid)
+    oldgrid =deepcopy(grid)
+    grid = None
+    grid = deepcopy(oldgrid)
 
-    # from pprint import pprint
-    # pprint(grid)
-    for i in list(grid.keys()):
-        for j in list(grid[i].keys()):
+    for i in sorted(list(grid.keys())):
+        for j in sorted(list(grid[i].keys())):
             substr = ''
 
             try:
                 substr+=grid[i-1][j-1]
             except:
-                grid[i-1][j-1]='0'
-                substr+='0'
+                new_grid[i-1][j-1]=filler
+                substr+=filler
             try:
                 substr+=grid[i-1][j]
             except:
-                grid[i-1][j]='0'
-                substr+='0'
+                new_grid[i-1][j]=filler
+                substr+=filler
             try:
                 substr+=grid[i-1][j+1]
             except:
-                grid[i-1][j+1]='0'
-                substr+='0'
+                new_grid[i-1][j+1]=filler
+                substr+=filler
 
             try:
                 substr+=grid[i][j-1]
             except:
-                grid[i][j-1]='0'
-                substr+='0'
+                new_grid[i][j-1]=filler
+                substr+=filler
             substr+=grid[i][j]
             try:
                 substr+=grid[i][j+1]
             except:
-                grid[i][j+1]='0'
-                substr+='0'
+                new_grid[i][j+1]=filler
+                substr+=filler
 
             try:
                 substr+=grid[i+1][j-1]
             except:
-                grid[i+1][j-1]='0'
-                substr+='0'
+                new_grid[i+1][j-1]=filler
+                substr+=filler
             try:
                 substr+=grid[i+1][j]
             except:
-                grid[i+1][j]='0'
-                substr+='0'
+                new_grid[i+1][j]=filler
+                substr+=filler
             try:
                 substr+=grid[i+1][j+1]
             except:
-                grid[i+1][j+1]='0'
-                substr+='0'
+                new_grid[i+1][j+1]=filler
+                substr+=filler
 
             bin_number = int(substr, 2)
             new_number = algo[bin_number]
@@ -87,13 +93,14 @@ def updateGrid(grid, algo):
     return new_grid
 
 
-def part1(pixels):
+def part1(pixels, iterations):
     algo, image = pixels.split('\n\n')
     algo = algo.replace('#', '1').replace('.', '0')
 
     positions = defaultdict(dict)
     grid = [list(y.strip()) for y in image.strip().split('\n')]
-    grid = pad_grid(pad_grid(grid, '0'),'0')
+    fill = '0'
+    grid = pad_grid(pad_grid(grid, fill),fill)
     for y in range(len(grid)):
         for x in range(len(grid[y])):
             if grid[y][x]=='#':
@@ -101,18 +108,31 @@ def part1(pixels):
             else:
                 positions[y][x] = '0'
 
+    out = ''
+    for y in sorted(positions.keys()):
+        for x in sorted(positions[y].keys()):
+            if positions[y][x] =='1':
+                out+='#'
+            else:
+                out+='.'
+        out+='\n'
+    print(out)
 
-    result = 0
-    for k in positions.keys():
-        result+= sum([int(x) for x in positions[k].values()])
-    print(result)
-    positions = updateGrid(positions,algo)
-    result = 0
-    for k in positions.keys():
-        result+= sum([int(x) for x in positions[k].values()])
-    print(result, 23)
+    # return
 
-    positions = updateGrid(positions,algo)
+    for i in range(iterations):
+        print(i, i % 2)
+        # positions = deepcopy(updateGrid(deepcopy(positions),algo, str((i) % 2)))
+        positions = deepcopy(updateGrid(deepcopy(positions),algo, '0'))
+        out = ''
+        for y in sorted(positions.keys()):
+            for x in sorted(positions[y].keys()):
+                if positions[y][x] =='1':
+                    out+='#'
+                else:
+                    out+='.'
+            out+='\n'
+        print(out)
 
     result = 0
     for k in positions.keys():
@@ -124,7 +144,9 @@ def part1(pixels):
 
 if __name__ == '__main__':
     expected1 = 35
-    test1 = part1(testInput)
+    test1 = part1(testInput, 2)
     print("Test 1:", expected1, expected1==test1, test1)
     if expected1 == test1:
-        print("Part 1:", part1(myInput))
+        print("Part 1:", part1(myInput, 2))
+        #NOT 5367, too high
+        # 5334 too high
