@@ -13,6 +13,13 @@ with open( os.path.join(os.path.dirname(__file__), inputfile) ) as f:
     myInput = f.read().strip()
 
 
+def pad_grid(grid, filler):
+    new_grid = [[filler]*(len(grid[0])+2)]
+    new_grid += [ [filler]+line+[filler] for line in grid ]
+    new_grid += [[filler]*(len(grid[0])+2)]
+    return new_grid
+
+
 def print_grid(grid):
     out = ''
     for y in grid:
@@ -85,7 +92,8 @@ def part1(pixels):
     algo = algo.replace('#', '1').replace('.', '0')
 
     positions = defaultdict(dict)
-    grid = [y.strip() for y in image.strip().split('\n')]
+    grid = [list(y.strip()) for y in image.strip().split('\n')]
+    grid = pad_grid(pad_grid(grid, '0'),'0')
     for y in range(len(grid)):
         for x in range(len(grid[y])):
             if grid[y][x]=='#':
