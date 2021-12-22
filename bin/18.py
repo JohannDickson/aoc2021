@@ -14,22 +14,6 @@ with open( os.path.join(os.path.dirname(__file__), inputfile) ) as f:
     myInput = [x.strip() for x in f.readlines()]
 
 
-def calculatePosition(pos):
-    pos['x']+=pos['velocity']['x']
-    pos['y']+=pos['velocity']['y']
-
-    pos['maxy'] = max(pos['y'], pos['maxy'])
-
-    if pos['velocity']['x'] > 0:
-        pos['velocity']['x']-=1
-    elif pos['velocity']['x']<0:
-        pos['velocity']['x']+=1
-
-    pos['velocity']['y']-=1
-
-    return pos
-
-
 def find_deepest(numbers):
     for i in range(len(numbers)):
         if type(numbers[i]) == list:
