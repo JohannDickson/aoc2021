@@ -15,20 +15,21 @@ with open( os.path.join(os.path.dirname(__file__), inputfile) ) as f:
 
 
 def pad_grid(grid, filler):
-    new_grid = [[filler]*(len(grid[0])+2)]
-    new_grid += [ [filler]+line+[filler] for line in grid ]
+    new_grid = [[filler]*(len(grid[0])+2)]*4
+    new_grid += [ [filler]*4+line+[filler]*4 for line in grid ]
     new_grid += [[filler]*(len(grid[0])+2)]
     return new_grid
 
 
 def print_grid(grid):
     out = ''
-    for y in grid:
-        for x in y:
+    for y,z in grid.items():
+        for x in grid[y].values():
             if x =='1':
                 out+='#'
             else:
                 out+='.'
+        out+='\n'
     print(out)
 
 
@@ -100,9 +101,37 @@ def part1(pixels, iterations):
     positions = defaultdict(dict)
     grid = [list(y.strip()) for y in image.strip().split('\n')]
     fill = '0'
-    # for _ in range(iterations*iterations + iterations):
-    #     grid = pad_grid(grid,fill)
-    grid = pad_grid(grid,fill)
+
+    grid = pad_grid(grid, fill)
+    for y in range(len(grid)):
+        for x in range(len(grid[y])):
+            if grid[y][x]=='#':
+                positions[y][x] = '1'
+            else:
+                positions[y][x] = '0'
+
+    positions = updateGrid(positions,algo, '0', '1')
+    positions = updateGrid(positions,algo, '1', '0')
+
+    result = 0
+    for k in positions.keys():
+        result+= sum([int(x) for x in positions[k].values()])
+
+    return result
+
+
+def part2(pixels, iterations):
+    algo, image = pixels.split('\n\n')
+    algo = algo.replace('#', '1').replace('.', '0')
+
+    positions = defaultdict(dict)
+    grid = [list(y.strip()) for y in image.strip().split('\n')]
+
+    fill = '0'
+    grid = pad_grid(grid, fill)
+    grid = pad_grid(grid, fill)
+    grid = pad_grid(grid, fill)
+
     for y in range(len(grid)):
         for x in range(len(grid[y])):
             if grid[y][x]=='#':
@@ -112,6 +141,8 @@ def part1(pixels, iterations):
 
     for i in range(iterations):
         positions = deepcopy(updateGrid(deepcopy(positions),algo, str((i) % 2), str((i+1) % 2)))
+        print_grid(positions)
+        print('\n\n')
 
     result = 0
     for k in positions.keys():
@@ -121,9 +152,5 @@ def part1(pixels, iterations):
 
 
 if __name__ == '__main__':
-    # expected1 = 35
-    # test1 = part1(testInput, 2)
-    # print("Test 1:", expected1, expected1==test1, test1)
-    # if expected1 == test1:
-    print("Part 1:", part1(myInput, 2)) # 5268
-    print("Part 1:", part1(myInput, 50)) # 16452
+    print("Part 1:", part1(myInput, 2))
+    print("Part 2:", part2(myInput, 50))
