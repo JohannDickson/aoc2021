@@ -41,6 +41,17 @@ def find_lengths(numbers, deep):
 
 
 def explode(numbers, deep, lengths):
+    [i,j,k,l] = deep
+    [a, b] = numbers[i][j][k][l]
+    prev=lengths[4]
+    for i in range(len(lengths)-1, -1, -1):
+        if prev == 0 and i==0:
+
+        elif prev == 0 and i==1:
+
+        print(lengths, i-1)
+
+
 
     return numbers
 
