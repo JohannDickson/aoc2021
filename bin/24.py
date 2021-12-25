@@ -14,9 +14,11 @@ with open( os.path.join(os.path.dirname(__file__), inputfile) ) as f:
     myInput = [x.strip() for x in f.readlines()]
 
 
-def part1(instructions, numberInput):
+def m_o_n_a_d(instructions, numberInput):
     a = None
     b = None
+
+    inpstr=list(str(numberInput))
 
     mem = {
     "w": 0,
@@ -28,7 +30,7 @@ def part1(instructions, numberInput):
     for ins in instructions:
         action = ins.split(" ", 1)[0]
         ab =  ins.split(" ")[1:]
-        print(action, ab)
+        # print(action, ab)
 
         a = int(mem[ab[0]])
         if len(ab) == 2:
@@ -37,10 +39,10 @@ def part1(instructions, numberInput):
             else:
                 b = int(ab[1])
 
-        print(ins, action, a, b)
+        # print(ins, action, a, b)
 
         if action == "inp":
-            mem[ab[0]] = numberInput
+            mem[ab[0]] = inpstr.pop(0)
         elif action == "add":
             mem[ab[0]] = sum([a, b])
         elif action == "mul":
@@ -55,13 +57,18 @@ def part1(instructions, numberInput):
             else:
                 mem[ab[0]] = 0
 
+    return mem['z']
 
-    return mem
+
+def part1(instructions, modelno):
+    for i in range(99999999999999+1, 10000000000000, -1):
+        num = str(i)
+        if '0' in num: continue
+        res = m_o_n_a_d(instructions, num)
+        print(num, res)
+        if res == True:
+            return i
 
 
 if __name__ == '__main__':
-    test1 = part1(testInput, 13579246899999)
-    expected1 = None
-    print(f"Test part 1 ({expected1}):", test1)
-    if test1 == expected1:
-        print("Part 1:", part1(myInput, 13579246899999))
+    print("Part 1:", part1(myInput, 13579246899999))
